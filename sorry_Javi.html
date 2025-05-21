@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorry Javi!</title>
+  <style>
+    body {
+      background: #f8f8f8;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .emoji {
+      font-size: 4em;
+      margin: 0.2em;
+      animation: wiggle 1.5s infinite;
+      display: inline-block;
+    }
+    @keyframes wiggle {
+      0%, 100% { transform: rotate(-10deg);}
+      50% { transform: rotate(10deg);}
+    }
+    .message {
+      font-size: 2em;
+      color: #333;
+      margin: 0.5em 0 0.2em 0;
+      text-align: center;
+    }
+    .small {
+      color: #888;
+      font-size: 1.2em;
+      margin-top: 1em;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <span class="emoji">🍕</span>
+    <span class="emoji">🍔</span>
+    <span class="emoji">😅</span>
+    <span class="emoji">🍣</span>
+    <span class="emoji">🥲</span>
+    <span class="emoji">🍜</span>
+  </div>
+  <div class="message">
+    Sorry Javi! <br>
+    I didn’t wait for you for lunch today.<br>
+    Next time! 🥢🍽️
+  </div>
+  <div class="small">
+    (I promise next time i will not drink water! 🍕)
+  </div>
+</body>
+</html>
