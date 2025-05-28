@@ -8,58 +8,60 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #1d3557;
+      background: #1d3557; /* blue background */
     }
     body {
       min-height: 100vh;
       width: 100vw;
       font-family: 'Segoe UI', Arial, sans-serif;
-      color: #1d3557;
+      color: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .container {
-      position: relative;
-      margin: 3em auto;
-      padding: 2em 3em;
-      max-width: 700px;
-      width: 95%;
-      min-height: 600px;
-      border-radius: 24px;
-      box-shadow: 0 0 40px 10px rgba(0,0,0,0.2);
+    .card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* Card background image */
-      background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg') center center no-repeat;
-      background-size: contain; /* Show the whole image, no cropping */
-      background-repeat: no-repeat;
-      background-position: center center;
-      background-color: #eaf6ff; /* fallback blue */
-      overflow: hidden;
+      justify-content: center;
+      background: #1d3557; /* fallback for transparency */
+      border-radius: 24px;
+      box-shadow: 0 0 40px 10px rgba(0,0,0,0.2);
+      padding: 2em 2em 2em 2em;
+      max-width: 800px;
+      width: 95vw;
+    }
+    .card-image {
+      width: 350px;
+      max-width: 90vw;
+      border-radius: 16px;
+      display: block;
+      margin: 0 auto 1.2em auto;
+      box-shadow: 0 4px 24px #0007;
+      object-fit: contain;
+      background: #fff;
     }
     .header-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1em;
-      margin-bottom: 0.5em;
+      margin-bottom: 1em;
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 2.2em;
       font-family: 'Brush Script MT', cursive, Arial, sans-serif;
       letter-spacing: 0.05em;
       text-align: center;
-      color: #1d5fa7;
+      color: #d35400; /* dark orange */
       margin: 0;
       background: none;
       box-shadow: none;
       padding: 0;
     }
     .basketball-img {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       cursor: pointer;
       transition: transform 0.2s;
       filter: drop-shadow(0 4px 12px #0008);
@@ -69,31 +71,29 @@
       transform: scale(1.10) rotate(-7deg);
       filter: drop-shadow(0 8px 24px #000b);
     }
-    .music-section {
-      margin-bottom: 1em;
-    }
-    .poems {
+    .poems-row {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
       gap: 2em;
       margin-top: 2em;
       margin-bottom: 1em;
-      width: 100%;
     }
     .poem-block {
       flex: 1;
+      color: #fff;
       background: none;
-      border-radius: 16px;
-      padding: 1.5em;
+      border-radius: 0;
+      padding: 0 0.5em;
       min-width: 0;
-      color: #1d3557;
       box-shadow: none;
     }
     .poem-title {
       font-weight: bold;
       margin-bottom: 0.5em;
       font-size: 1.1em;
-      color: #3b7dd8;
+      color: #fff;
       text-align: center;
       background: none;
     }
@@ -108,25 +108,34 @@
       margin-top: 1em;
       text-align: right;
       font-size: 1em;
-      color: #3b7dd8;
+      color: #fff;
       background: none;
       border-radius: 0;
       padding: 0;
       display: inline-block;
       box-shadow: none;
     }
+    @media (max-width: 700px) {
+      .poems-row {
+        flex-direction: column;
+        gap: 1em;
+      }
+      .card-image {
+        width: 95vw;
+        max-width: 95vw;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="card">
+    <img src="freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg" alt="Neuroscientist" class="card-image">
     <div class="header-row">
       <h1>Happy Birthday Javi!</h1>
-      <div class="music-section">
-        <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
-        <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
-      </div>
+      <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
+      <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
     </div>
-    <div class="poems">
+    <div class="poems-row">
       <div class="poem-block">
         <div class="poem-title">Deutsch</div>
         <div class="poem">
