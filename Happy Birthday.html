@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Happy Birthday, Javi!</title>
+  <title>Happy Birthday Javi!</title>
   <style>
     body {
       margin: 0;
@@ -10,8 +10,7 @@
       min-height: 100vh;
       font-family: 'Segoe UI', Arial, sans-serif;
       color: #fff;
-      /* Blue, universe-themed background */
-      background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background: url('https://img.freepik.com/free-photo/birthday-background-with-balloons-confetti_1126954.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       flex-direction: column;
@@ -24,7 +23,7 @@
       border-radius: 24px;
       margin-top: 3em;
       padding: 2em 3em;
-      max-width: 900px;
+      max-width: 950px;
       width: 95%;
       box-shadow: 0 0 40px 10px rgba(0,0,0,0.3);
     }
@@ -74,26 +73,29 @@
       margin-top: 2em;
       text-align: center;
     }
-    .music-section button {
-      background: #3b7dd8;
-      color: #fff;
-      border: none;
-      border-radius: 20px;
-      padding: 0.7em 2em;
-      font-size: 1.1em;
+    .cake-img {
+      width: 120px;
+      height: auto;
       cursor: pointer;
-      box-shadow: 0 2px 8px #0004;
-      margin-top: 0.5em;
-      transition: background 0.2s;
+      transition: transform 0.2s;
+      filter: drop-shadow(0 4px 12px #0008);
     }
-    .music-section button:hover {
-      background: #285a9c;
+    .cake-img:hover {
+      transform: scale(1.08) rotate(-2deg);
+      filter: drop-shadow(0 8px 24px #000b);
+    }
+    .hint {
+      display: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Happy Birthday</h1>
+    <h1>Happy Birthday Javi!</h1>
+    <div class="music-section">
+      <img src="https://img.icons8.com/color/452/birthday-cake.png" alt="Birthday Cake" class="cake-img" id="cake" title="Click to play music">
+      <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
+    </div>
     <div class="poems">
       <div class="poem-block">
         <div class="poem-title">Deutsch</div>
@@ -123,14 +125,9 @@ Me permito olvidarte.
       </div>
     </div>
     <div class="author">– Bert Hellinger</div>
-    <div class="music-section">
-      <div>Click to play soft birthday piano music:</div>
-      <button id="playMusicBtn">Play Music</button>
-      <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
-    </div>
   </div>
   <script>
-    document.getElementById('playMusicBtn').addEventListener('click', function() {
+    document.getElementById('cake').addEventListener('click', function() {
       var audio = document.getElementById('bg-music');
       audio.play();
     });
