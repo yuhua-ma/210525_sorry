@@ -8,18 +8,19 @@
       height: 100%;
       margin: 0;
       padding: 0;
+      background: #1d3557;
     }
     body {
       min-height: 100vh;
       width: 100vw;
       font-family: 'Segoe UI', Arial, sans-serif;
-      color: #222;
-      background: #1d3557; /* fallback blue */
-      overflow-x: hidden;
+      color: #1d3557;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .container {
       position: relative;
-      z-index: 2;
       margin: 3em auto;
       padding: 2em 3em;
       max-width: 700px;
@@ -30,56 +31,46 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      /* Set background image for the card only */
+      /* Card background image */
       background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg') center center no-repeat;
       background-size: contain; /* Show the whole image, no cropping */
-      background-color: #1d3557; /* fallback blue */
       background-repeat: no-repeat;
       background-position: center center;
+      background-color: #eaf6ff; /* fallback blue */
       overflow: hidden;
     }
-    .card-overlay {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 180, 0.55); /* pastel yellow highlight */
-      z-index: 1;
-      border-radius: 24px;
-      pointer-events: none;
-    }
-    .card-content {
-      position: relative;
-      z-index: 2;
-      width: 100%;
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1em;
+      margin-bottom: 0.5em;
     }
     h1 {
-      font-size: 3em;
+      font-size: 2.5em;
       font-family: 'Brush Script MT', cursive, Arial, sans-serif;
       letter-spacing: 0.05em;
       text-align: center;
-      margin-bottom: 0.5em;
       color: #1d5fa7;
-      text-shadow: 0 4px 20px #fff, 0 1px 0 #fff;
-      background: rgba(255,255,255,0.4);
-      border-radius: 12px;
-      padding: 0.2em 0.5em;
-      display: inline-block;
-    }
-    .music-section {
-      margin-top: 1em;
-      text-align: center;
+      margin: 0;
+      background: none;
+      box-shadow: none;
+      padding: 0;
     }
     .basketball-img {
-      width: 90px;
-      height: auto;
+      width: 60px;
+      height: 60px;
       cursor: pointer;
       transition: transform 0.2s;
       filter: drop-shadow(0 4px 12px #0008);
+      flex-shrink: 0;
     }
     .basketball-img:hover {
       transform: scale(1.10) rotate(-7deg);
       filter: drop-shadow(0 8px 24px #000b);
+    }
+    .music-section {
+      margin-bottom: 1em;
     }
     .poems {
       display: flex;
@@ -91,12 +82,12 @@
     }
     .poem-block {
       flex: 1;
-      background: rgba(173, 216, 230, 0.85); /* light blue highlight */
+      background: none;
       border-radius: 16px;
       padding: 1.5em;
       min-width: 0;
       color: #1d3557;
-      box-shadow: 0 2px 8px #0001;
+      box-shadow: none;
     }
     .poem-title {
       font-weight: bold;
@@ -104,38 +95,41 @@
       font-size: 1.1em;
       color: #3b7dd8;
       text-align: center;
+      background: none;
     }
     .poem {
       font-style: italic;
       font-size: 1.1em;
       white-space: pre-line;
       line-height: 1.6;
+      background: none;
     }
     .author {
       margin-top: 1em;
       text-align: right;
       font-size: 1em;
       color: #3b7dd8;
-      background: rgba(255,255,255,0.7);
-      border-radius: 8px;
-      padding: 0.2em 0.5em;
+      background: none;
+      border-radius: 0;
+      padding: 0;
       display: inline-block;
+      box-shadow: none;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="card-overlay"></div>
-    <div class="card-content">
+    <div class="header-row">
       <h1>Happy Birthday Javi!</h1>
       <div class="music-section">
         <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
         <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
       </div>
-      <div class="poems">
-        <div class="poem-block">
-          <div class="poem-title">Deutsch</div>
-          <div class="poem">
+    </div>
+    <div class="poems">
+      <div class="poem-block">
+        <div class="poem-title">Deutsch</div>
+        <div class="poem">
 Ich erlaube dir, dein Leben so zu leben, wie es für dich stimmt.<br>
 Ich erlaube mir, mein Leben so zu leben, wie es für mich stimmt.<br>
 Ich erlaube dir, mich zu verlassen.<br>
@@ -144,11 +138,11 @@ Ich erlaube dir, mich zu lieben.<br>
 Ich erlaube mir, dich zu lieben.<br>
 Ich erlaube dir, mich zu vergessen.<br>
 Ich erlaube mir, dich zu vergessen.
-          </div>
         </div>
-        <div class="poem-block">
-          <div class="poem-title">Español</div>
-          <div class="poem">
+      </div>
+      <div class="poem-block">
+        <div class="poem-title">Español</div>
+        <div class="poem">
 Te permito vivir tu vida como sea correcto para ti.<br>
 Me permito vivir mi vida como sea correcto para mí.<br>
 Te permito dejarme.<br>
@@ -157,11 +151,10 @@ Te permito amarme.<br>
 Me permito amarte.<br>
 Te permito olvidarme.<br>
 Me permito olvidarte.
-          </div>
         </div>
       </div>
-      <div class="author">– Bert Hellinger</div>
     </div>
+    <div class="author">– Bert Hellinger</div>
   </div>
   <script>
     document.getElementById('basketball').addEventListener('click', function() {
