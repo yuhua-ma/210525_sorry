@@ -32,7 +32,7 @@
       z-index: 10;
       color: #d35400; /* dark orange */
       text-shadow: 0 2px 8px #fff8;
-      font-size: 1.35em; /* bigger text */
+      font-size: 1.15em; /* smaller text */
     }
     .poem-outer.left {
       left: 2vw;
@@ -45,7 +45,7 @@
     .poem-title {
       font-weight: bold;
       margin-bottom: 0.5em;
-      font-size: 1.18em;
+      font-size: 1.1em;
       color: #d35400; /* dark orange */
       text-align: inherit;
       text-shadow: 0 2px 8px #fff8;
@@ -80,7 +80,7 @@
       box-shadow: 0 0 40px 10px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg') center center no-repeat;
       background-size: cover;
       background-repeat: no-repeat;
@@ -94,8 +94,9 @@
       top: 18px;
       left: 24px;
       display: flex;
-      align-items: center;
-      gap: 1em;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.3em;
       margin-bottom: 1em;
       width: auto;
       z-index: 30;
@@ -120,6 +121,7 @@
       transition: transform 0.2s;
       filter: drop-shadow(0 4px 12px #0008);
       flex-shrink: 0;
+      margin-top: 0.3em;
     }
     .basketball-img:hover {
       transform: scale(1.10) rotate(-7deg);
