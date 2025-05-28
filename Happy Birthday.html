@@ -30,9 +30,9 @@
       width: 270px;
       max-width: 30vw;
       z-index: 10;
-      color: #fff;
-      text-shadow: 0 2px 8px #000a;
-      font-size: 1.1em;
+      color: #d35400; /* dark orange */
+      text-shadow: 0 2px 8px #fff8;
+      font-size: 1.35em; /* bigger text */
     }
     .poem-outer.left {
       left: 2vw;
@@ -45,14 +45,29 @@
     .poem-title {
       font-weight: bold;
       margin-bottom: 0.5em;
-      font-size: 1.1em;
-      color: #fff;
+      font-size: 1.18em;
+      color: #d35400; /* dark orange */
       text-align: inherit;
+      text-shadow: 0 2px 8px #fff8;
     }
     .poem {
       font-style: italic;
       white-space: pre-line;
       line-height: 1.6;
+      color: #d35400; /* dark orange */
+      text-shadow: 0 2px 8px #fff8;
+    }
+    .author {
+      margin-top: 1em;
+      text-align: right;
+      font-size: 1em;
+      color: #d35400; /* dark orange */
+      background: none;
+      border-radius: 0;
+      padding: 0;
+      display: block;
+      box-shadow: none;
+      text-shadow: 0 2px 8px #fff8;
     }
     .container {
       position: relative;
@@ -75,18 +90,21 @@
       z-index: 20;
     }
     .header-row {
+      position: absolute;
+      top: 18px;
+      left: 24px;
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 1em;
       margin-bottom: 1em;
-      width: 100%;
+      width: auto;
+      z-index: 30;
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 2.2em;
       font-family: 'Brush Script MT', cursive, Arial, sans-serif;
       letter-spacing: 0.05em;
-      text-align: center;
+      text-align: left;
       color: #d35400; /* dark orange */
       margin: 0;
       background: none;
@@ -96,8 +114,8 @@
       text-shadow: 0 2px 8px #fff8;
     }
     .basketball-img {
-      width: 60px;
-      height: 60px;
+      width: 48px;
+      height: 48px;
       cursor: pointer;
       transition: transform 0.2s;
       filter: drop-shadow(0 4px 12px #0008);
@@ -107,21 +125,20 @@
       transform: scale(1.10) rotate(-7deg);
       filter: drop-shadow(0 8px 24px #000b);
     }
-    .author {
-      margin-top: 1em;
-      text-align: right;
-      font-size: 1em;
-      color: #fff;
-      background: none;
-      border-radius: 0;
-      padding: 0;
-      display: inline-block;
-      box-shadow: none;
-      text-shadow: 0 2px 6px #222;
-    }
     @media (max-width: 1100px) {
       .poem-outer {
         display: none;
+      }
+    }
+    @media (max-width: 700px) {
+      .container {
+        min-width: 95vw;
+        min-height: 60vw;
+      }
+      .header-row {
+        position: static;
+        justify-content: center;
+        margin-bottom: 1em;
       }
     }
   </style>
@@ -139,6 +156,7 @@ Ich erlaube mir, dich zu lieben.
 Ich erlaube dir, mich zu vergessen.
 Ich erlaube mir, dich zu vergessen.
     </div>
+    <div class="author">– Bert Hellinger</div>
   </div>
   <div class="container">
     <div class="header-row">
@@ -146,7 +164,6 @@ Ich erlaube mir, dich zu vergessen.
       <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
       <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
     </div>
-    <div class="author">– Bert Hellinger</div>
   </div>
   <div class="poem-outer right">
     <div class="poem-title">Español</div>
