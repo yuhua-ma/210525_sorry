@@ -10,7 +10,8 @@
       min-height: 100vh;
       font-family: 'Segoe UI', Arial, sans-serif;
       color: #fff;
-      background: url('https://img.freepik.com/free-photo/birthday-background-with-balloons-confetti_1126954.jpg') no-repeat center center fixed;
+      /* Use your uploaded image as the background */
+      background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       flex-direction: column;
@@ -26,6 +27,9 @@
       max-width: 950px;
       width: 95%;
       box-shadow: 0 0 40px 10px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     h1 {
       font-size: 4em;
@@ -36,12 +40,28 @@
       color: #aee7ff;
       text-shadow: 0 4px 20px #2b3a67, 0 1px 0 #fff;
     }
+    .music-section {
+      margin-top: 1em;
+      text-align: center;
+    }
+    .basketball-img {
+      width: 90px;
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.2s;
+      filter: drop-shadow(0 4px 12px #0008);
+    }
+    .basketball-img:hover {
+      transform: scale(1.10) rotate(-7deg);
+      filter: drop-shadow(0 8px 24px #000b);
+    }
     .poems {
       display: flex;
       justify-content: space-between;
       gap: 2em;
       margin-top: 2em;
       margin-bottom: 1em;
+      width: 100%;
     }
     .poem-block {
       flex: 1;
@@ -69,31 +89,13 @@
       font-size: 1em;
       color: #c0dfff;
     }
-    .music-section {
-      margin-top: 2em;
-      text-align: center;
-    }
-    .cake-img {
-      width: 120px;
-      height: auto;
-      cursor: pointer;
-      transition: transform 0.2s;
-      filter: drop-shadow(0 4px 12px #0008);
-    }
-    .cake-img:hover {
-      transform: scale(1.08) rotate(-2deg);
-      filter: drop-shadow(0 8px 24px #000b);
-    }
-    .hint {
-      display: none;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Happy Birthday Javi!</h1>
     <div class="music-section">
-      <img src="https://img.icons8.com/color/452/birthday-cake.png" alt="Birthday Cake" class="cake-img" id="cake" title="Click to play music">
+      <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
       <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
     </div>
     <div class="poems">
@@ -127,7 +129,7 @@ Me permito olvidarte.
     <div class="author">– Bert Hellinger</div>
   </div>
   <script>
-    document.getElementById('cake').addEventListener('click', function() {
+    document.getElementById('basketball').addEventListener('click', function() {
       var audio = document.getElementById('bg-music');
       audio.play();
     });
