@@ -1,93 +1,132 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>¡Feliz Cumpleaños, Javi!</title>
+  <title>Happy Birthday, Javi!</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
-      background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background: url('https://img.freepik.com/free-vector/blue-birthday-background-with-balloons-confetti_23-2148908768.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      text-shadow: 0 0 10px #000;
+      justify-content: flex-start;
+      text-shadow: 0 2px 8px #000;
     }
-    .card {
-      background: rgba(0, 0, 0, 0.6);
+    .container {
+      background: rgba(0, 32, 64, 0.65);
+      border-radius: 24px;
+      margin-top: 3em;
       padding: 2em 3em;
-      border-radius: 20px;
-      box-shadow: 0 0 40px 10px rgba(0,0,0,0.5);
-      max-width: 700px;
+      max-width: 850px;
+      width: 90%;
+      box-shadow: 0 0 40px 10px rgba(0,0,0,0.3);
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 3.5em;
+      font-family: 'Brush Script MT', cursive, Arial, sans-serif;
+      letter-spacing: 0.05em;
+      text-align: center;
       margin-bottom: 0.5em;
+      color: #d0e7ff;
+      text-shadow: 0 4px 20px #2b3a67, 0 1px 0 #fff;
     }
-    .poem-section {
+    .poems {
+      display: flex;
+      justify-content: space-between;
+      gap: 2em;
       margin-top: 2em;
+      margin-bottom: 1em;
+    }
+    .poem-block {
+      flex: 1;
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 1.5em;
+      min-width: 0;
     }
     .poem-title {
       font-weight: bold;
       margin-bottom: 0.5em;
       font-size: 1.1em;
+      color: #b5d6ff;
+      text-align: center;
     }
     .poem {
       font-style: italic;
+      font-size: 1.1em;
       white-space: pre-line;
-      margin-bottom: 1em;
+      line-height: 1.6;
     }
     .author {
       margin-top: 1em;
       text-align: right;
       font-size: 1em;
+      color: #c0dfff;
+    }
+    .music-section {
+      margin-top: 2em;
+      text-align: center;
+    }
+    .music-section button {
+      background: #3b7dd8;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 0.7em 2em;
+      font-size: 1.1em;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0004;
+      margin-top: 0.5em;
+      transition: background 0.2s;
+    }
+    .music-section button:hover {
+      background: #285a9c;
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>¡Feliz Cumpleaños, Javi!</h1>
-    <p>Te deseo un día lleno de alegría y estrellas. Aquí tienes un poema especial de Bert Hellinger:</p>
-    <div class="poem-section">
-      <div class="poem-title">Versión original (alemán):</div>
-      <div class="poem">
-        Ich erlaube dir, dein Leben so zu leben, wie es für dich stimmt.<br>
-        Ich erlaube mir, mein Leben so zu leben, wie es für mich stimmt.<br>
-        Ich erlaube dir, mich zu verlassen.<br>
-        Ich erlaube mir, dich zu verlassen.<br>
-        Ich erlaube dir, mich zu lieben.<br>
-        Ich erlaube mir, dich zu lieben.<br>
-        Ich erlaube dir, mich zu vergessen.<br>
-        Ich erlaube mir, dich zu vergessen.<br>
+  <div class="container">
+    <h1>Happy Birthday, Javi!</h1>
+    <div class="poems">
+      <div class="poem-block">
+        <div class="poem-title">Deutsch</div>
+        <div class="poem">
+Ich erlaube dir, dein Leben so zu leben, wie es fÃ¼r dich stimmt.<br>
+Ich erlaube mir, mein Leben so zu leben, wie es fÃ¼r mich stimmt.<br>
+Ich erlaube dir, mich zu verlassen.<br>
+Ich erlaube mir, dich zu verlassen.<br>
+Ich erlaube dir, mich zu lieben.<br>
+Ich erlaube mir, dich zu lieben.<br>
+Ich erlaube dir, mich zu vergessen.<br>
+Ich erlaube mir, dich zu vergessen.
+        </div>
       </div>
-      <div class="poem-title">Traducción al español:</div>
-      <div class="poem">
-        Te permito vivir tu vida como sea correcto para ti.<br>
-        Me permito vivir mi vida como sea correcto para mí.<br>
-        Te permito dejarme.<br>
-        Me permito dejarte.<br>
-        Te permito amarme.<br>
-        Me permito amarte.<br>
-        Te permito olvidarme.<br>
-        Me permito olvidarte.<br>
-      </div>
-      <div class="author">
-        – Bert Hellinger
+      <div class="poem-block">
+        <div class="poem-title">EspaÃ±ol</div>
+        <div class="poem">
+Te permito vivir tu vida como sea correcto para ti.<br>
+Me permito vivir mi vida como sea correcto para mÃ­.<br>
+Te permito dejarme.<br>
+Me permito dejarte.<br>
+Te permito amarme.<br>
+Me permito amarte.<br>
+Te permito olvidarme.<br>
+Me permito olvidarte.
+        </div>
       </div>
     </div>
+    <div class="author">â€“ Bert Hellinger</div>
+    <div class="music-section">
+      <div>Click to play soft meditation music:</div>
+      <button onclick="document.getElementById('bg-music').play()">Play Music</button>
+      <audio id="bg-music" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b7fae3d6.mp3" loop></audio>
+    </div>
   </div>
-<audio id="bg-music" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b7fae3d6.mp3" autoplay loop controls style="display:none"></audio>
-<script>
-  // Attempt to autoplay (some browsers block autoplay with sound)
-  const audio = document.getElementById('bg-music');
-  document.body.addEventListener('click', () => {
-    audio.play();
-  });
-</script>
 </body>
 </html>
