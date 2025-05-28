@@ -10,7 +10,8 @@
       min-height: 100vh;
       font-family: 'Segoe UI', Arial, sans-serif;
       color: #fff;
-      background: url('https://img.freepik.com/free-vector/blue-birthday-background-with-balloons-confetti_23-2148908768.jpg') no-repeat center center fixed;
+      /* Blue, universe-themed background */
+      background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       flex-direction: column;
@@ -19,21 +20,21 @@
       text-shadow: 0 2px 8px #000;
     }
     .container {
-      background: rgba(0, 32, 64, 0.65);
+      background: rgba(10, 30, 60, 0.70);
       border-radius: 24px;
       margin-top: 3em;
       padding: 2em 3em;
-      max-width: 850px;
-      width: 90%;
+      max-width: 900px;
+      width: 95%;
       box-shadow: 0 0 40px 10px rgba(0,0,0,0.3);
     }
     h1 {
-      font-size: 3.5em;
+      font-size: 4em;
       font-family: 'Brush Script MT', cursive, Arial, sans-serif;
       letter-spacing: 0.05em;
       text-align: center;
       margin-bottom: 0.5em;
-      color: #d0e7ff;
+      color: #aee7ff;
       text-shadow: 0 4px 20px #2b3a67, 0 1px 0 #fff;
     }
     .poems {
@@ -45,7 +46,7 @@
     }
     .poem-block {
       flex: 1;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.10);
       border-radius: 16px;
       padding: 1.5em;
       min-width: 0;
@@ -92,7 +93,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>Happy Birthday, Javi!</h1>
+    <h1>Happy Birthday</h1>
     <div class="poems">
       <div class="poem-block">
         <div class="poem-title">Deutsch</div>
@@ -123,10 +124,16 @@ Me permito olvidarte.
     </div>
     <div class="author">– Bert Hellinger</div>
     <div class="music-section">
-      <div>Click to play soft meditation music:</div>
-      <button onclick="document.getElementById('bg-music').play()">Play Music</button>
-      <audio id="bg-music" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b7fae3d6.mp3" loop></audio>
+      <div>Click to play soft birthday piano music:</div>
+      <button id="playMusicBtn">Play Music</button>
+      <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
     </div>
   </div>
+  <script>
+    document.getElementById('playMusicBtn').addEventListener('click', function() {
+      var audio = document.getElementById('bg-music');
+      audio.play();
+    });
+  </script>
 </body>
 </html>
