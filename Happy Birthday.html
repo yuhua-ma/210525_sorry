@@ -8,38 +8,71 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #1d3557; /* blue background */
+      background: #1d3557;
+      width: 100vw;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
     body {
-      min-height: 100vh;
-      width: 100vw;
       font-family: 'Segoe UI', Arial, sans-serif;
       color: #fff;
+      min-height: 100vh;
+      width: 100vw;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
-    .card {
+    .poem-outer {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 270px;
+      max-width: 30vw;
+      z-index: 10;
+      color: #fff;
+      text-shadow: 0 2px 8px #000a;
+      font-size: 1.1em;
+    }
+    .poem-outer.left {
+      left: 2vw;
+      text-align: right;
+    }
+    .poem-outer.right {
+      right: 2vw;
+      text-align: left;
+    }
+    .poem-title {
+      font-weight: bold;
+      margin-bottom: 0.5em;
+      font-size: 1.1em;
+      color: #fff;
+      text-align: inherit;
+    }
+    .poem {
+      font-style: italic;
+      white-space: pre-line;
+      line-height: 1.6;
+    }
+    .container {
+      position: relative;
+      margin: 3em auto;
+      padding: 2.5em 2em 2em 2em;
+      max-width: 700px;
+      width: 95vw;
+      min-height: 600px;
+      border-radius: 24px;
+      box-shadow: 0 0 40px 10px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      background: #1d3557; /* fallback for transparency */
-      border-radius: 24px;
-      box-shadow: 0 0 40px 10px rgba(0,0,0,0.2);
-      padding: 2em 2em 2em 2em;
-      max-width: 800px;
-      width: 95vw;
-    }
-    .card-image {
-      width: 350px;
-      max-width: 90vw;
-      border-radius: 16px;
-      display: block;
-      margin: 0 auto 1.2em auto;
-      box-shadow: 0 4px 24px #0007;
-      object-fit: contain;
-      background: #fff;
+      background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg') center center no-repeat;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-color: #eaf6ff;
+      overflow: hidden;
+      z-index: 20;
     }
     .header-row {
       display: flex;
@@ -47,9 +80,10 @@
       justify-content: center;
       gap: 1em;
       margin-bottom: 1em;
+      width: 100%;
     }
     h1 {
-      font-size: 2.2em;
+      font-size: 2.5em;
       font-family: 'Brush Script MT', cursive, Arial, sans-serif;
       letter-spacing: 0.05em;
       text-align: center;
@@ -58,10 +92,12 @@
       background: none;
       box-shadow: none;
       padding: 0;
+      flex-shrink: 0;
+      text-shadow: 0 2px 8px #fff8;
     }
     .basketball-img {
-      width: 50px;
-      height: 50px;
+      width: 60px;
+      height: 60px;
       cursor: pointer;
       transition: transform 0.2s;
       filter: drop-shadow(0 4px 12px #0008);
@@ -70,39 +106,6 @@
     .basketball-img:hover {
       transform: scale(1.10) rotate(-7deg);
       filter: drop-shadow(0 8px 24px #000b);
-    }
-    .poems-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      width: 100%;
-      gap: 2em;
-      margin-top: 2em;
-      margin-bottom: 1em;
-    }
-    .poem-block {
-      flex: 1;
-      color: #fff;
-      background: none;
-      border-radius: 0;
-      padding: 0 0.5em;
-      min-width: 0;
-      box-shadow: none;
-    }
-    .poem-title {
-      font-weight: bold;
-      margin-bottom: 0.5em;
-      font-size: 1.1em;
-      color: #fff;
-      text-align: center;
-      background: none;
-    }
-    .poem {
-      font-style: italic;
-      font-size: 1.1em;
-      white-space: pre-line;
-      line-height: 1.6;
-      background: none;
     }
     .author {
       margin-top: 1em;
@@ -114,56 +117,49 @@
       padding: 0;
       display: inline-block;
       box-shadow: none;
+      text-shadow: 0 2px 6px #222;
     }
-    @media (max-width: 700px) {
-      .poems-row {
-        flex-direction: column;
-        gap: 1em;
-      }
-      .card-image {
-        width: 95vw;
-        max-width: 95vw;
+    @media (max-width: 1100px) {
+      .poem-outer {
+        display: none;
       }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg" alt="Neuroscientist" class="card-image">
+  <div class="poem-outer left">
+    <div class="poem-title">Deutsch</div>
+    <div class="poem">
+Ich erlaube dir, dein Leben so zu leben, wie es für dich stimmt.
+Ich erlaube mir, mein Leben so zu leben, wie es für mich stimmt.
+Ich erlaube dir, mich zu verlassen.
+Ich erlaube mir, dich zu verlassen.
+Ich erlaube dir, mich zu lieben.
+Ich erlaube mir, dich zu lieben.
+Ich erlaube dir, mich zu vergessen.
+Ich erlaube mir, dich zu vergessen.
+    </div>
+  </div>
+  <div class="container">
     <div class="header-row">
       <h1>Happy Birthday Javi!</h1>
       <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
       <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
     </div>
-    <div class="poems-row">
-      <div class="poem-block">
-        <div class="poem-title">Deutsch</div>
-        <div class="poem">
-Ich erlaube dir, dein Leben so zu leben, wie es für dich stimmt.<br>
-Ich erlaube mir, mein Leben so zu leben, wie es für mich stimmt.<br>
-Ich erlaube dir, mich zu verlassen.<br>
-Ich erlaube mir, dich zu verlassen.<br>
-Ich erlaube dir, mich zu lieben.<br>
-Ich erlaube mir, dich zu lieben.<br>
-Ich erlaube dir, mich zu vergessen.<br>
-Ich erlaube mir, dich zu vergessen.
-        </div>
-      </div>
-      <div class="poem-block">
-        <div class="poem-title">Español</div>
-        <div class="poem">
-Te permito vivir tu vida como sea correcto para ti.<br>
-Me permito vivir mi vida como sea correcto para mí.<br>
-Te permito dejarme.<br>
-Me permito dejarte.<br>
-Te permito amarme.<br>
-Me permito amarte.<br>
-Te permito olvidarme.<br>
-Me permito olvidarte.
-        </div>
-      </div>
-    </div>
     <div class="author">– Bert Hellinger</div>
+  </div>
+  <div class="poem-outer right">
+    <div class="poem-title">Español</div>
+    <div class="poem">
+Te permito vivir tu vida como sea correcto para ti.
+Me permito vivir mi vida como sea correcto para mí.
+Te permito dejarme.
+Me permito dejarte.
+Te permito amarme.
+Me permito amarte.
+Te permito olvidarme.
+Me permito olvidarte.
+    </div>
   </div>
   <script>
     document.getElementById('basketball').addEventListener('click', function() {
