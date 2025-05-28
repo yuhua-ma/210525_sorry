@@ -14,43 +14,54 @@
       width: 100vw;
       font-family: 'Segoe UI', Arial, sans-serif;
       color: #222;
-      background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg') no-repeat center center fixed;
-      background-size: cover; /* Ensures full coverage */
-      position: relative;
+      background: #1d3557; /* fallback blue */
       overflow-x: hidden;
-    }
-    .background-overlay {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(30,60,120,0.55); /* Blue, semi-transparent overlay */
-      z-index: 1;
-      pointer-events: none;
     }
     .container {
       position: relative;
       z-index: 2;
-      background: rgba(255,255,255,0.80); /* Light background for text highlight */
-      border-radius: 24px;
       margin: 3em auto;
       padding: 2em 3em;
-      max-width: 950px;
+      max-width: 700px;
       width: 95%;
+      min-height: 600px;
+      border-radius: 24px;
       box-shadow: 0 0 40px 10px rgba(0,0,0,0.2);
       display: flex;
       flex-direction: column;
       align-items: center;
+      /* Set background image for the card only */
+      background: url('freepik__a-young-caucasian-male-neuroscientist-with-short-b__54332.jpeg') center center no-repeat;
+      background-size: contain; /* Show the whole image, no cropping */
+      background-color: #1d3557; /* fallback blue */
+      background-repeat: no-repeat;
+      background-position: center center;
+      overflow: hidden;
+    }
+    .card-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 180, 0.55); /* pastel yellow highlight */
+      z-index: 1;
+      border-radius: 24px;
+      pointer-events: none;
+    }
+    .card-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
     }
     h1 {
-      font-size: 4em;
+      font-size: 3em;
       font-family: 'Brush Script MT', cursive, Arial, sans-serif;
       letter-spacing: 0.05em;
       text-align: center;
       margin-bottom: 0.5em;
       color: #1d5fa7;
       text-shadow: 0 4px 20px #fff, 0 1px 0 #fff;
-      background: rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.4);
       border-radius: 12px;
       padding: 0.2em 0.5em;
       display: inline-block;
@@ -80,11 +91,11 @@
     }
     .poem-block {
       flex: 1;
-      background: rgba(255,255,255,0.85); /* Highlight poem blocks */
+      background: rgba(173, 216, 230, 0.85); /* light blue highlight */
       border-radius: 16px;
       padding: 1.5em;
       min-width: 0;
-      color: #1d5fa7;
+      color: #1d3557;
       box-shadow: 0 2px 8px #0001;
     }
     .poem-title {
@@ -113,17 +124,18 @@
   </style>
 </head>
 <body>
-  <div class="background-overlay"></div>
   <div class="container">
-    <h1>Happy Birthday Javi!</h1>
-    <div class="music-section">
-      <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
-      <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
-    </div>
-    <div class="poems">
-      <div class="poem-block">
-        <div class="poem-title">Deutsch</div>
-        <div class="poem">
+    <div class="card-overlay"></div>
+    <div class="card-content">
+      <h1>Happy Birthday Javi!</h1>
+      <div class="music-section">
+        <img src="https://img.icons8.com/color/96/000000/basketball.png" alt="Basketball" class="basketball-img" id="basketball" title="Click to play music">
+        <audio id="bg-music" src="happy-birthday-to-you-piano-version-13976.mp3" loop></audio>
+      </div>
+      <div class="poems">
+        <div class="poem-block">
+          <div class="poem-title">Deutsch</div>
+          <div class="poem">
 Ich erlaube dir, dein Leben so zu leben, wie es für dich stimmt.<br>
 Ich erlaube mir, mein Leben so zu leben, wie es für mich stimmt.<br>
 Ich erlaube dir, mich zu verlassen.<br>
@@ -132,11 +144,11 @@ Ich erlaube dir, mich zu lieben.<br>
 Ich erlaube mir, dich zu lieben.<br>
 Ich erlaube dir, mich zu vergessen.<br>
 Ich erlaube mir, dich zu vergessen.
+          </div>
         </div>
-      </div>
-      <div class="poem-block">
-        <div class="poem-title">Español</div>
-        <div class="poem">
+        <div class="poem-block">
+          <div class="poem-title">Español</div>
+          <div class="poem">
 Te permito vivir tu vida como sea correcto para ti.<br>
 Me permito vivir mi vida como sea correcto para mí.<br>
 Te permito dejarme.<br>
@@ -145,10 +157,11 @@ Te permito amarme.<br>
 Me permito amarte.<br>
 Te permito olvidarme.<br>
 Me permito olvidarte.
+          </div>
         </div>
       </div>
+      <div class="author">– Bert Hellinger</div>
     </div>
-    <div class="author">– Bert Hellinger</div>
   </div>
   <script>
     document.getElementById('basketball').addEventListener('click', function() {
