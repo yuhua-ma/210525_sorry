@@ -2,119 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Canvas Basketball Game</title>
+  <title>Simple Basketball Canvas Game</title>
   <style>
     body {
-      background: #2d3436;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    h1 {
-      margin-top: 30px;
-      font-size: 2em;
-      letter-spacing: 2px;
-    }
-    #gameContainer {
-      margin: 30px auto 0 auto;
-      width: 420px;
       background: #222;
-      border-radius: 16px;
-      box-shadow: 0 0 24px #0007;
-      padding-bottom: 20px;
+      color: #fff;
+      text-align: center;
+      font-family: Arial, sans-serif;
     }
     #gameCanvas {
-      display: block;
-      margin: 20px auto 0 auto;
       background: #4e944f;
-      border-radius: 12px;
-      box-shadow: 0 0 12px #0005;
       border: 3px solid #fff;
+      border-radius: 12px;
+      margin-top: 30px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
     #instructions {
       margin-top: 10px;
-      font-size: 1.1em;
       color: #f1c40f;
-    }
-    #scoreboard {
-      margin: 15px auto 0 auto;
-      font-size: 1.2em;
-      background: #333a;
-      border-radius: 10px;
-      width: 180px;
-      padding: 8px 0;
-      letter-spacing: 1px;
     }
   </style>
 </head>
 <body>
-  <h1>🏀 Canvas Basketball Game</h1>
-  <div id="gameContainer">
-    <canvas id="gameCanvas" width="400" height="500"></canvas>
-    <div id="scoreboard">
-      Score: <span id="score">0</span> | Shots: <span id="shots">0</span>
-    </div>
-    <div id="instructions">
-      Click/tap <b>on the ball</b> and drag to set angle and power, release to shoot!
-    </div>
+  <h1>🏀 Simple Basketball Game</h1>
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <div id="instructions">
+    Click/tap <b>on the ball</b>, drag to set angle and power, release to shoot!
   </div>
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const scoreSpan = document.getElementById('score');
-    const shotsSpan = document.getElementById('shots');
 
-    // Game variables
-    let score = 0, shots = 0;
+    // Ball properties
     let ball = {
-      x: 200, y: 450, r: 18,
-      vx: 0, vy: 0,
-      inMotion: false
+      x: 200,
+      y: 450,
+      r: 20,
+      vx: 0,
+      vy: 0,
+      inMotion: false,
+      scored: false
     };
-    let hoop = {
-      x: 120, y: 100, w: 160, h: 12
+
+    // Hoop properties
+    const hoop = {
+      x: 200,
+      y: 120,
+      r: 40
     };
+
+    // Aim
     let aiming = false;
     let canAim = false;
     let aimStart = {x: 0, y: 0};
     let aimEnd = {x: 0, y: 0};
 
-    // Draw functions
+    // Score
+    let score = 0, shots = 0;
+
     function drawCourt() {
-      ctx.fillStyle = "#4e944f";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
+      // Draw hoop
       ctx.beginPath();
-      ctx.arc(200, 400, 60, 0, Math.PI, true);
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(200, 500, 180, Math.PI, 2 * Math.PI, false);
-      ctx.strokeStyle = "#fff7";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-    }
-
-    function drawHoop() {
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(hoop.x + hoop.w/2 - 30, hoop.y - 10, 60, 6);
-
-      ctx.beginPath();
-      ctx.arc(hoop.x + hoop.w/2, hoop.y + 6, 38, 0, Math.PI, false);
+      ctx.arc(hoop.x, hoop.y, hoop.r, 0, Math.PI, false);
+      ctx.lineWidth = 7;
       ctx.strokeStyle = "#e67e22";
-      ctx.lineWidth = 6;
       ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(hoop.x + hoop.w/2 - 38, hoop.y + 6);
-      ctx.lineTo(hoop.x + hoop.w/2, hoop.y + 32);
-      ctx.lineTo(hoop.x + hoop.w/2 + 38, hoop.y + 6);
-      ctx.strokeStyle = "#fff";
       ctx.lineWidth = 2;
+      ctx.strokeStyle = "#fff";
+      ctx.beginPath();
+      ctx.moveTo(hoop.x - hoop.r, hoop.y);
+      ctx.lineTo(hoop.x + hoop.r, hoop.y);
       ctx.stroke();
     }
 
@@ -126,7 +85,7 @@
       ctx.strokeStyle = "#b3541e";
       ctx.lineWidth = 3;
       ctx.stroke();
-
+      // Ball lines
       ctx.strokeStyle = "#b3541e";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -150,61 +109,42 @@
       ctx.moveTo(ball.x, ball.y);
       ctx.lineTo(aimEnd.x, aimEnd.y);
       ctx.stroke();
-      // Arrowhead
-      let angle = Math.atan2(aimEnd.y - ball.y, aimEnd.x - ball.x);
-      for (let side of [-1, 1]) {
-        ctx.beginPath();
-        ctx.moveTo(aimEnd.x, aimEnd.y);
-        ctx.lineTo(
-          aimEnd.x - 15 * Math.cos(angle - side * Math.PI / 8),
-          aimEnd.y - 15 * Math.sin(angle - side * Math.PI / 8)
-        );
-        ctx.stroke();
-      }
       ctx.restore();
     }
 
-    // Game loop
+    function drawScore() {
+      ctx.font = "20px Arial";
+      ctx.fillStyle = "#fff";
+      ctx.fillText(`Score: ${score} | Shots: ${shots}`, 10, 30);
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawCourt();
-      drawHoop();
       drawBall();
       drawAimArrow();
+      drawScore();
     }
 
     function update() {
       if (ball.inMotion) {
         ball.x += ball.vx;
         ball.y += ball.vy;
-        ball.vy += 0.28; // gravity
+        ball.vy += 0.35; // gravity
 
-        let rimCenter = hoop.x + hoop.w/2;
-        let rimY = hoop.y + 6;
+        // Score detection: ball passes through hoop
         if (
-          ball.y + ball.r > rimY - 6 &&
-          ball.y + ball.r < rimY + 16 &&
-          Math.abs(ball.x - rimCenter) < 40
-        ) {
-          if (ball.vy > 0) {
-            ball.vy *= -0.45;
-            ball.vx *= 0.7;
-            ball.y = rimY - ball.r - 2;
-          }
-        }
-
-        if (
-          ball.y - ball.r > rimY + 10 &&
-          Math.abs(ball.x - rimCenter) < 32 &&
-          ball.vy > 0 &&
-          !ball.scored
+          !ball.scored &&
+          ball.y - ball.r < hoop.y + 10 &&
+          ball.y - ball.r > hoop.y - 10 &&
+          Math.abs(ball.x - hoop.x) < hoop.r - 10
         ) {
           score++;
-          scoreSpan.textContent = score;
           ball.scored = true;
         }
 
-        if (ball.y > 520 || ball.x < -40 || ball.x > 440) {
+        // Stop if out of bounds
+        if (ball.y - ball.r > canvas.height || ball.x < -40 || ball.x > canvas.width + 40) {
           resetBall();
         }
       }
@@ -225,7 +165,6 @@
       ball.scored = false;
     }
 
-    // Mouse/touch controls
     function isPointInBall(x, y) {
       const dx = x - ball.x;
       const dy = y - ball.y;
@@ -240,8 +179,74 @@
       };
     }
 
+    // Mouse controls
     canvas.addEventListener('mousedown', (e) => {
       if (ball.inMotion) return;
       const pos = getMousePos(e);
       if (isPointInBall(pos.x, pos.y)) {
-        aiming = true
+        aiming = true;
+        canAim = true;
+        aimStart = {...pos};
+        aimEnd = {...pos};
+      }
+    });
+    canvas.addEventListener('mousemove', (e) => {
+      if (aiming && canAim) {
+        aimEnd = getMousePos(e);
+      }
+    });
+    canvas.addEventListener('mouseup', (e) => {
+      if (aiming && canAim) {
+        aiming = false;
+        canAim = false;
+        aimEnd = getMousePos(e);
+        shootBall();
+      }
+    });
+
+    // Touch controls
+    canvas.addEventListener('touchstart', (e) => {
+      if (ball.inMotion) return;
+      const pos = getMousePos(e);
+      if (isPointInBall(pos.x, pos.y)) {
+        aiming = true;
+        canAim = true;
+        aimStart = {...pos};
+        aimEnd = {...pos};
+      }
+      e.preventDefault();
+    }, {passive: false});
+    canvas.addEventListener('touchmove', (e) => {
+      if (aiming && canAim) {
+        aimEnd = getMousePos(e);
+      }
+      e.preventDefault();
+    }, {passive: false});
+    canvas.addEventListener('touchend', (e) => {
+      if (aiming && canAim) {
+        aiming = false;
+        canAim = false;
+        shootBall();
+      }
+      e.preventDefault();
+    }, {passive: false});
+
+    function shootBall() {
+      let dx = aimStart.x - aimEnd.x;
+      let dy = aimStart.y - aimEnd.y;
+      let power = Math.min(Math.sqrt(dx*dx + dy*dy), 150);
+      if (power < 15) return;
+      let angle = Math.atan2(dy, dx);
+      ball.vx = -(power * Math.cos(angle)) / 8;
+      ball.vy = -(power * Math.sin(angle)) / 8;
+      ball.inMotion = true;
+      ball.scored = false;
+      shots++;
+    }
+
+    // Start game
+    draw();
+    gameLoop();
+  </script>
+</body>
+</html>
