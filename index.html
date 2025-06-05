@@ -57,7 +57,7 @@
       Score: <span id="score">0</span> | Shots: <span id="shots">0</span>
     </div>
     <div id="instructions">
-      Click and drag to set angle and power, release to shoot!
+      Click/tap <b>on the ball</b> and drag to set angle and power, release to shoot!
     </div>
   </div>
   <script>
@@ -77,23 +77,21 @@
       x: 120, y: 100, w: 160, h: 12
     };
     let aiming = false;
+    let canAim = false;
     let aimStart = {x: 0, y: 0};
     let aimEnd = {x: 0, y: 0};
 
     // Draw functions
     function drawCourt() {
-      // Court background
       ctx.fillStyle = "#4e944f";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Paint free throw circle
       ctx.beginPath();
       ctx.arc(200, 400, 60, 0, Math.PI, true);
       ctx.strokeStyle = "#fff";
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Paint 3-point arc
       ctx.beginPath();
       ctx.arc(200, 500, 180, Math.PI, 2 * Math.PI, false);
       ctx.strokeStyle = "#fff7";
@@ -102,16 +100,15 @@
     }
 
     function drawHoop() {
-      // Backboard
       ctx.fillStyle = "#fff";
       ctx.fillRect(hoop.x + hoop.w/2 - 30, hoop.y - 10, 60, 6);
-      // Rim
+
       ctx.beginPath();
       ctx.arc(hoop.x + hoop.w/2, hoop.y + 6, 38, 0, Math.PI, false);
       ctx.strokeStyle = "#e67e22";
       ctx.lineWidth = 6;
       ctx.stroke();
-      // Net
+
       ctx.beginPath();
       ctx.moveTo(hoop.x + hoop.w/2 - 38, hoop.y + 6);
       ctx.lineTo(hoop.x + hoop.w/2, hoop.y + 32);
@@ -129,7 +126,7 @@
       ctx.strokeStyle = "#b3541e";
       ctx.lineWidth = 3;
       ctx.stroke();
-      // Ball lines
+
       ctx.strokeStyle = "#b3541e";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -178,12 +175,10 @@
 
     function update() {
       if (ball.inMotion) {
-        // Physics
         ball.x += ball.vx;
         ball.y += ball.vy;
         ball.vy += 0.28; // gravity
 
-        // Rim collision
         let rimCenter = hoop.x + hoop.w/2;
         let rimY = hoop.y + 6;
         if (
@@ -192,13 +187,12 @@
           Math.abs(ball.x - rimCenter) < 40
         ) {
           if (ball.vy > 0) {
-            ball.vy *= -0.45; // bounce
+            ball.vy *= -0.45;
             ball.vx *= 0.7;
             ball.y = rimY - ball.r - 2;
           }
         }
 
-        // Score detection (ball passes through rim)
         if (
           ball.y - ball.r > rimY + 10 &&
           Math.abs(ball.x - rimCenter) < 32 &&
@@ -210,7 +204,6 @@
           ball.scored = true;
         }
 
-        // Out of bounds or stopped
         if (ball.y > 520 || ball.x < -40 || ball.x > 440) {
           resetBall();
         }
@@ -233,6 +226,12 @@
     }
 
     // Mouse/touch controls
+    function isPointInBall(x, y) {
+      const dx = x - ball.x;
+      const dy = y - ball.y;
+      return dx*dx + dy*dy <= ball.r*ball.r;
+    }
+
     function getMousePos(evt) {
       const rect = canvas.getBoundingClientRect();
       return {
@@ -243,51 +242,6 @@
 
     canvas.addEventListener('mousedown', (e) => {
       if (ball.inMotion) return;
-      aiming = true;
-      aimStart = getMousePos(e);
-      aimEnd = {...aimStart};
-    });
-    canvas.addEventListener('mousemove', (e) => {
-      if (aiming) {
-        aimEnd = getMousePos(e);
-      }
-    });
-    canvas.addEventListener('mouseup', (e) => {
-      if (!aiming) return;
-      aiming = false;
-      aimEnd = getMousePos(e);
-      shootBall();
-    });
-
-    // Touch events for mobile
-    canvas.addEventListener('touchstart', (e) => {
-      if (ball.inMotion) return;
-      aiming = true;
-      aimStart = getMousePos(e);
-      aimEnd = {...aimStart};
-      e.preventDefault();
-    }, {passive: false});
-    canvas.addEventListener('touchmove', (e) => {
-      if (aiming) {
-        aimEnd = getMousePos(e);
-        e.preventDefault();
-      }
-    }, {passive: false});
-    canvas.addEventListener('touchend', (e) => {
-      if (!aiming) return;
-      aiming = false;
-      shootBall();
-      e.preventDefault();
-    }, {passive: false});
-
-    function shootBall() {
-      // Calculate velocity based on aim vector
-      let dx = aimStart.x - aimEnd.x;
-      let dy = aimStart.y - aimEnd.y;
-      let power = Math.min(Math.sqrt(dx*dx + dy*dy), 140);
-      if (power < 20) return; // too weak
-      let angle = Math.atan2(dy, dx);
-      ball.vx = -(power * Math.cos(angle)) / 9;
-      ball.vy = -(power * Math.sin(angle)) / 9;
-      ball.inMotion = true;
-      ball.scored = false;
+      const pos = getMousePos(e);
+      if (isPointInBall(pos.x, pos.y)) {
+        aiming = true
