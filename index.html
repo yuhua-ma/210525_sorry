@@ -1,25 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Basketball Canvas Game</title>
+  <title>Canvas Basketball Game</title>
   <style>
-    canvas { background: #4e944f; display: block; margin: 0 auto; }
+    body {
+      background: #2d3436;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 30px;
+      font-size: 2em;
+      letter-spacing: 2px;
+    }
+    #gameContainer {
+      margin: 30px auto 0 auto;
+      width: 420px;
+      background: #222;
+      border-radius: 16px;
+      box-shadow: 0 0 24px #0007;
+      padding-bottom: 20px;
+    }
+    #gameCanvas {
+      display: block;
+      margin: 20px auto 0 auto;
+      background: #4e944f;
+      border-radius: 12px;
+      box-shadow: 0 0 12px #0005;
+      border: 3px solid #fff;
+    }
+    #instructions {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: #f1c40f;
+    }
+    #scoreboard {
+      margin: 15px auto 0 auto;
+      font-size: 1.2em;
+      background: #333a;
+      border-radius: 10px;
+      width: 180px;
+      padding: 8px 0;
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 <body>
-  <canvas id="game" width="600" height="400"></canvas>
+  <h1>🏀 Canvas Basketball Game</h1>
+  <div id="gameContainer">
+    <canvas id="gameCanvas" width="400" height="500"></canvas>
+    <div id="scoreboard">
+      Score: <span id="score">0</span> | Shots: <span id="shots">0</span>
+    </div>
+    <div id="instructions">
+      Click and drag to set angle and power, release to shoot!
+    </div>
+  </div>
   <script>
-    const canvas = document.getElementById('game');
+    const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    let ball = { x: 300, y: 350, r: 15, vy: 0, shooting: false };
+    const scoreSpan = document.getElementById('score');
+    const shotsSpan = document.getElementById('shots');
+
+    // Game variables
+    let score = 0, shots = 0;
+    let ball = {
+      x: 200, y: 450, r: 18,
+      vx: 0, vy: 0,
+      inMotion: false
+    };
+    let hoop = {
+      x: 120, y: 100, w: 160, h: 12
+    };
+    let aiming = false;
+    let aimStart = {x: 0, y: 0};
+    let aimEnd = {x: 0, y: 0};
+
+    // Draw functions
+    function drawCourt() {
+      // Court background
+      ctx.fillStyle = "#4e944f";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Paint free throw circle
+      ctx.beginPath();
+      ctx.arc(200, 400, 60, 0, Math.PI, true);
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Paint 3-point arc
+      ctx.beginPath();
+      ctx.arc(200, 500, 180, Math.PI, 2 * Math.PI, false);
+      ctx.strokeStyle = "#fff7";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
 
     function drawHoop() {
-      ctx.fillStyle = "#d35400";
-      ctx.fillRect(250, 50, 100, 10);
-      ctx.strokeStyle = "#fff";
+      // Backboard
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(hoop.x + hoop.w/2 - 30, hoop.y - 10, 60, 6);
+      // Rim
       ctx.beginPath();
-      ctx.arc(300, 60, 40, 0, Math.PI, false);
+      ctx.arc(hoop.x + hoop.w/2, hoop.y + 6, 38, 0, Math.PI, false);
+      ctx.strokeStyle = "#e67e22";
+      ctx.lineWidth = 6;
+      ctx.stroke();
+      // Net
+      ctx.beginPath();
+      ctx.moveTo(hoop.x + hoop.w/2 - 38, hoop.y + 6);
+      ctx.lineTo(hoop.x + hoop.w/2, hoop.y + 32);
+      ctx.lineTo(hoop.x + hoop.w/2 + 38, hoop.y + 6);
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
       ctx.stroke();
     }
 
@@ -28,30 +126,168 @@
       ctx.arc(ball.x, ball.y, ball.r, 0, 2 * Math.PI);
       ctx.fillStyle = "#e67e22";
       ctx.fill();
+      ctx.strokeStyle = "#b3541e";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      // Ball lines
+      ctx.strokeStyle = "#b3541e";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r-2, 0, Math.PI, false);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.r-2, Math.PI, 2*Math.PI, false);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(ball.x, ball.y-ball.r+2);
+      ctx.lineTo(ball.x, ball.y+ball.r-2);
       ctx.stroke();
     }
 
-    function gameLoop() {
+    function drawAimArrow() {
+      if (!aiming) return;
+      ctx.save();
+      ctx.strokeStyle = "#f1c40f";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(ball.x, ball.y);
+      ctx.lineTo(aimEnd.x, aimEnd.y);
+      ctx.stroke();
+      // Arrowhead
+      let angle = Math.atan2(aimEnd.y - ball.y, aimEnd.x - ball.x);
+      for (let side of [-1, 1]) {
+        ctx.beginPath();
+        ctx.moveTo(aimEnd.x, aimEnd.y);
+        ctx.lineTo(
+          aimEnd.x - 15 * Math.cos(angle - side * Math.PI / 8),
+          aimEnd.y - 15 * Math.sin(angle - side * Math.PI / 8)
+        );
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Game loop
+    function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawCourt();
       drawHoop();
       drawBall();
-      if (ball.shooting) {
+      drawAimArrow();
+    }
+
+    function update() {
+      if (ball.inMotion) {
+        // Physics
+        ball.x += ball.vx;
         ball.y += ball.vy;
-        ball.vy -= 0.5; // gravity
-        if (ball.y < 60) ball.shooting = false;
+        ball.vy += 0.28; // gravity
+
+        // Rim collision
+        let rimCenter = hoop.x + hoop.w/2;
+        let rimY = hoop.y + 6;
+        if (
+          ball.y + ball.r > rimY - 6 &&
+          ball.y + ball.r < rimY + 16 &&
+          Math.abs(ball.x - rimCenter) < 40
+        ) {
+          if (ball.vy > 0) {
+            ball.vy *= -0.45; // bounce
+            ball.vx *= 0.7;
+            ball.y = rimY - ball.r - 2;
+          }
+        }
+
+        // Score detection (ball passes through rim)
+        if (
+          ball.y - ball.r > rimY + 10 &&
+          Math.abs(ball.x - rimCenter) < 32 &&
+          ball.vy > 0 &&
+          !ball.scored
+        ) {
+          score++;
+          scoreSpan.textContent = score;
+          ball.scored = true;
+        }
+
+        // Out of bounds or stopped
+        if (ball.y > 520 || ball.x < -40 || ball.x > 440) {
+          resetBall();
+        }
       }
+    }
+
+    function gameLoop() {
+      update();
+      draw();
       requestAnimationFrame(gameLoop);
     }
 
-    canvas.addEventListener('click', () => {
-      if (!ball.shooting) {
-        ball.y = 350;
-        ball.vy = -10 - Math.random() * 5;
-        ball.shooting = true;
+    function resetBall() {
+      ball.x = 200;
+      ball.y = 450;
+      ball.vx = 0;
+      ball.vy = 0;
+      ball.inMotion = false;
+      ball.scored = false;
+    }
+
+    // Mouse/touch controls
+    function getMousePos(evt) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (evt.touches ? evt.touches[0].clientX : evt.clientX) - rect.left,
+        y: (evt.touches ? evt.touches[0].clientY : evt.clientY) - rect.top
+      };
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      if (ball.inMotion) return;
+      aiming = true;
+      aimStart = getMousePos(e);
+      aimEnd = {...aimStart};
+    });
+    canvas.addEventListener('mousemove', (e) => {
+      if (aiming) {
+        aimEnd = getMousePos(e);
       }
     });
+    canvas.addEventListener('mouseup', (e) => {
+      if (!aiming) return;
+      aiming = false;
+      aimEnd = getMousePos(e);
+      shootBall();
+    });
 
-    gameLoop();
-  </script>
-</body>
-</html>
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', (e) => {
+      if (ball.inMotion) return;
+      aiming = true;
+      aimStart = getMousePos(e);
+      aimEnd = {...aimStart};
+      e.preventDefault();
+    }, {passive: false});
+    canvas.addEventListener('touchmove', (e) => {
+      if (aiming) {
+        aimEnd = getMousePos(e);
+        e.preventDefault();
+      }
+    }, {passive: false});
+    canvas.addEventListener('touchend', (e) => {
+      if (!aiming) return;
+      aiming = false;
+      shootBall();
+      e.preventDefault();
+    }, {passive: false});
+
+    function shootBall() {
+      // Calculate velocity based on aim vector
+      let dx = aimStart.x - aimEnd.x;
+      let dy = aimStart.y - aimEnd.y;
+      let power = Math.min(Math.sqrt(dx*dx + dy*dy), 140);
+      if (power < 20) return; // too weak
+      let angle = Math.atan2(dy, dx);
+      ball.vx = -(power * Math.cos(angle)) / 9;
+      ball.vy = -(power * Math.sin(angle)) / 9;
+      ball.inMotion = true;
+      ball.scored = false;
