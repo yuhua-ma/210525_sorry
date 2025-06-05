@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Basketball Shooting Game</title>
+  <title>Funny Basketball Game</title>
   <style>
     body {
-      background: #222;
+      background: #283747;
       color: #fff;
-      font-family: Arial, sans-serif;
+      font-family: 'Comic Sans MS', Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
@@ -26,6 +26,7 @@
       position: relative;
       box-shadow: 0 0 20px #0008;
       border: 4px solid #fff;
+      overflow: hidden;
     }
     #hoop {
       width: 90px;
@@ -33,11 +34,21 @@
       background: #d35400;
       border-radius: 40px 40px 0 0;
       position: absolute;
-      left: 50%;
+      left: 130px;
       top: 30px;
-      transform: translateX(-50%);
       border-bottom: 6px solid #fff;
       z-index: 2;
+      transition: left 0.2s;
+    }
+    #rim {
+      width: 90px;
+      height: 8px;
+      background: #fff;
+      border-radius: 40px 40px 0 0;
+      position: absolute;
+      left: 0;
+      top: 10px;
+      z-index: 3;
     }
     #ball {
       width: 40px;
@@ -45,13 +56,12 @@
       background: #e67e22;
       border-radius: 50%;
       position: absolute;
-      left: 50%;
+      left: 155px;
       bottom: 30px;
-      transform: translateX(-50%);
       box-shadow: 0 2px 8px #0008;
       border: 3px solid #b3541e;
       transition: all 0.7s cubic-bezier(.68,-0.55,.27,1.55);
-      z-index: 3;
+      z-index: 4;
     }
     #shootBtn {
       margin-top: 25px;
@@ -64,8 +74,10 @@
       cursor: pointer;
       box-shadow: 0 4px 12px #0004;
       transition: background 0.2s;
+      outline: none;
+      position: relative;
     }
-    #shootBtn:hover {
+    #shootBtn:active {
       background: #e67e22;
     }
     #scoreboard {
@@ -73,7 +85,7 @@
       font-size: 1.4em;
       background: #3338;
       border-radius: 10px;
-      width: 200px;
+      width: 220px;
       padding: 10px 0;
       letter-spacing: 1px;
     }
@@ -82,68 +94,109 @@
       font-size: 1.2em;
       min-height: 28px;
       color: #f1c40f;
+      min-height: 40px;
+    }
+    #powerBarContainer {
+      width: 220px;
+      height: 20px;
+      background: #222a;
+      margin: 18px auto 0 auto;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid #fff6;
+      position: relative;
+    }
+    #powerBar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #27ae60, #e67e22, #e74c3c);
+      transition: width 0.1s;
+    }
+    /* Funny ball faces */
+    #ball.face {
+      background: #f7ca18;
+      border: 3px solid #b3541e;
+      position: absolute;
+      overflow: hidden;
+    }
+    #ball.face::before, #ball.face::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: #222;
+    }
+    #ball.face::before {
+      width: 8px; height: 8px;
+      left: 10px; top: 12px;
+    }
+    #ball.face::after {
+      width: 8px; height: 8px;
+      left: 22px; top: 12px;
+    }
+    #ball.smile::after {
+      content: '';
+      position: absolute;
+      left: 13px; top: 24px;
+      width: 15px; height: 7px;
+      border-bottom: 2.5px solid #222;
+      border-radius: 0 0 12px 12px;
+    }
+    #ball.sad::after {
+      content: '';
+      position: absolute;
+      left: 13px; top: 28px;
+      width: 15px; height: 7px;
+      border-top: 2.5px solid #222;
+      border-radius: 0 0 12px 12px;
     }
   </style>
 </head>
 <body>
-  <h1>🏀 Basketball Shooting Game</h1>
+  <h1>🏀 Funny Basketball Game</h1>
   <div id="court">
-    <div id="hoop"></div>
+    <div id="hoop"><div id="rim"></div></div>
     <div id="ball"></div>
+  </div>
+  <div id="powerBarContainer">
+    <div id="powerBar"></div>
   </div>
   <div id="scoreboard">
     Score: <span id="score">0</span> / <span id="shots">0</span>
   </div>
-  <button id="shootBtn">Shoot!</button>
+  <button id="shootBtn">Hold & Release to Shoot!</button>
   <div id="message"></div>
 
+  <audio id="swish" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4b3e.mp3"></audio>
+  <audio id="rimSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4b3e.mp3"></audio>
+
   <script>
+    // DOM elements
     const ball = document.getElementById('ball');
     const hoop = document.getElementById('hoop');
     const shootBtn = document.getElementById('shootBtn');
     const scoreSpan = document.getElementById('score');
     const shotsSpan = document.getElementById('shots');
     const message = document.getElementById('message');
+    const powerBar = document.getElementById('powerBar');
+    const swish = document.getElementById('swish');
+    const rimSound = document.getElementById('rimSound');
 
+    // Game variables
     let score = 0;
     let shots = 0;
     let shooting = false;
+    let power = 0;
+    let powerInterval = null;
+    let hoopDirection = 1;
+    let hoopPos = 130; // px
+    let hoopSpeed = 2.5; // px per frame
 
-    function shootBall() {
-      if (shooting) return;
-      shooting = true;
-      message.textContent = '';
-      // Animate ball upwards
-      ball.style.transition = 'all 0.7s cubic-bezier(.68,-0.55,.27,1.55)';
-      ball.style.bottom = '240px';
-      ball.style.left = '50%';
-
-      setTimeout(() => {
-        // Randomly decide if shot is made
-        const made = Math.random() < 0.55; // 55% chance to make it
-        if (made) {
-          ball.style.background = '#27ae60';
-          message.textContent = '🎉 Nice shot! You scored!';
-          score++;
-        } else {
-          ball.style.background = '#e74c3c';
-          message.textContent = '😢 Missed! Try again!';
-        }
-        shots++;
-        scoreSpan.textContent = score;
-        shotsSpan.textContent = shots;
-
-        setTimeout(() => {
-          // Reset ball
-          ball.style.transition = 'all 0.3s';
-          ball.style.bottom = '30px';
-          ball.style.background = '#e67e22';
-          shooting = false;
-        }, 700);
-      }, 700);
-    }
-
-    shootBtn.addEventListener('click', shootBall);
-  </script>
-</body>
-</html>
+    // Funny messages
+    const funnyMakes = [
+      "Swish! Nothing but net! 🕺",
+      "You must be Steph Curry! 🏆",
+      "Buckets! 🔥",
+      "Did you just break the scoreboard?! 🤯",
+      "That shot was smoother than butter! 🧈",
+      "Boom! Goes the dynamite! 💥",
+      "You dunked on gravity
